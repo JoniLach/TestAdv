@@ -4,7 +4,7 @@
 from colorama import Fore, Style
 import keyboard
 from tabulate import tabulate
-from win32con import BROADCAST_QUERY_DENY
+# from win32con import BROADCAST_QUERY_DENY
 #map                                                                                                                                       #print(tabulate(map, headers='firstrow', tablefmt='grid'))
 map = [["a","b","c","d","e","f","g","h","i",""],
 ["desert", "desert", "desert", "desert","plains","plains","plains","plains","abandoned house","1"], 
@@ -21,17 +21,11 @@ Introduction = "Welcome to the game your objective is to kill the final boss you
 
 MapPrint = (tabulate(map, headers='firstrow', tablefmt='grid'))
 
-inventory = {"gun":False,"axe":False,"HealingPots":False,"rock": False,"sword":False,"stick":True
-}
+inventory = {"gun":False,"axe":False,"HealingPots":False,"rock": False,"sword":False,"stick":True}
 
 enemies = {"aligator":False,"person":False,"goblin":False,"village":False,"zombie":False}
 
-
-
-
-
-
-
+alive ={"aligator":True,"person":True,"goblin":True,"village":True,"zombie":True}
 
 A1 = {"text":"You are in an abandoned house.You just find a gun. there is plains on your left muddy dirt behind you. Where would you like to go?(left/backwards)",
 "item":"gun","moves":"0011","enemies":False,"letter":"A","number":"1"
@@ -249,382 +243,411 @@ I6 = {"text":""
 ##start
 #Example movement:
 #answer = input(position["text"])
+# TODO:make start posiosion random?!
 position = E6
 StringPos = position["letter"],position["number"]
 print(Fore.RED + Introduction + Fore.WHITE)
 
- 
 
-#answer = input(position["text"])
+def moveOptions(pos):
+    answer = input(pos["text"])
+    print("Your answer was: " + answer)
+    if answer=="left":
+        newPos = (chr(ord(pos["letter"]) - 1) + pos["number"])
+        print(globals()[newPos])
+        moveOptions(globals()[newPos])
+    if answer=="right":
+        newPos = (chr(ord(pos["letter"]) + 1) + pos["number"])
+        print(globals()[newPos])
+        moveOptions(globals()[newPos])
+    if answer=="forwards":
+        newPos = pos["letter"] + (chr(ord( pos["number"]) - 1))
+        print(globals()[newPos])
+        moveOptions(globals()[newPos])
+    if answer=="backwards":
+        newPos = pos["letter"] + (chr(ord( pos["number"]) + 1))
+        print(globals()[newPos])
+        moveOptions(globals()[newPos])
+    
+
+moveOptions(E6) #first move
 
 
-answer = input(position["text"])
 
-while game == "alive":
-    while keyboard.is_pressed("m") != True:
-        print(MapPrint)
-        print("you are in:",Fore.BLUE,StringPos,Fore.WHITE)
-        break
 
-    while health > 0:
-        for i in range(1000000000):
-            if answer == "right":
-                if position == A1:
-                    position = B1
-                elif position == A2:
-                    position = B2
-                elif position == A3:
-                    position = B3
-                elif position == A4:
-                    position = B4
-                elif position == A5:
-                    position = B5    
-                elif position == A6:
-                    position = B6
-                elif position == B1:
-                    position = C1
-                elif position == B2:
-                    position = C2
-                elif position == B3:
-                    position = C3
-                elif position == B4:
-                    position = C4
-                elif position == B5:
-                    position = C5    
-                elif position == B6:
-                    position = C6
-                elif position == C1:
-                    position = D1
-                elif position == C2:
-                    position = D2
-                elif position == C3:
-                    position = D3
-                elif position == C5:
-                    position = D5    
-                elif position == C6:
-                    position = D6        
-                elif position == D1:
-                    position = E1
-                elif position == D2:
-                    position = E2
-                elif position == D3:
-                    position = E3
-                elif position == D5:
-                    position = E5    
-                elif position == D6:
-                    position = E6
-                elif position == E1:
-                    position = F1
-                elif position == E2:
-                    position = F2
-                elif position == E3:
-                    position = F3
-                elif position == E5:
-                    position = F5    
-                elif position == E6:
-                    position = F6
-                elif position == F1:
-                    position = G1
-                elif position == F2:
-                    position = G2
-                elif position == F3:
-                    position = G3
-                elif position == F5:
-                    position = G5    
-                elif position == F6:
-                    position = G6
-                elif position == G1:
-                    position = H1
-                elif position == G2:
-                    position = H2
-                elif position == G3:
-                    position = H3
-                elif position == G4:
-                    position = H4
-                elif position == G5:
-                    position = H5    
-                elif position == G6:
-                    position = H6
-                elif position == H1:
-                    position = I1
-                elif position == H2:
-                    position = I2
-                elif position == H3:
-                    position = I3
-                elif position == H4:
-                    position = I4
-                elif position == H5:
-                    position = I5    
-                elif position == H6:
-                    position = I6
-                answer = input(position["text"])
+
+
+
+
+
+
+
+
+# while game == "alive":
+#     while keyboard.is_pressed("m") == True:
+#         print(MapPrint)
+#         print("you are in:",Fore.BLUE,StringPos,Fore.WHITE)
+#         break
+
+#     while health > 0:
+#         for i in range(1000000000):
+#             if answer == "right":
+#                 if position == A1:
+#                     position = B1
+#                 elif position == A2:
+#                     position = B2
+#                 elif position == A3:
+#                     position = B3
+#                 elif position == A4:
+#                     position = B4
+#                 elif position == A5:
+#                     position = B5    
+#                 elif position == A6:
+#                     position = B6
+#                 elif position == B1:
+#                     position = C1
+#                 elif position == B2:
+#                     position = C2
+#                 elif position == B3:
+#                     position = C3
+#                 elif position == B4:
+#                     position = C4
+#                 elif position == B5:
+#                     position = C5    
+#                 elif position == B6:
+#                     position = C6
+#                 elif position == C1:
+#                     position = D1
+#                 elif position == C2:
+#                     position = D2
+#                 elif position == C3:
+#                     position = D3
+#                 elif position == C5:
+#                     position = D5    
+#                 elif position == C6:
+#                     position = D6        
+#                 elif position == D1:
+#                     position = E1
+#                 elif position == D2:
+#                     position = E2
+#                 elif position == D3:
+#                     position = E3
+#                 elif position == D5:
+#                     position = E5    
+#                 elif position == D6:
+#                     position = E6
+#                 elif position == E1:
+#                     position = F1
+#                 elif position == E2:
+#                     position = F2
+#                 elif position == E3:
+#                     position = F3
+#                 elif position == E5:
+#                     position = F5    
+#                 elif position == E6:
+#                     position = F6
+#                 elif position == F1:
+#                     position = G1
+#                 elif position == F2:
+#                     position = G2
+#                 elif position == F3:
+#                     position = G3
+#                 elif position == F5:
+#                     position = G5    
+#                 elif position == F6:
+#                     position = G6
+#                 elif position == G1:
+#                     position = H1
+#                 elif position == G2:
+#                     position = H2
+#                 elif position == G3:
+#                     position = H3
+#                 elif position == G4:
+#                     position = H4
+#                 elif position == G5:
+#                     position = H5    
+#                 elif position == G6:
+#                     position = H6
+#                 elif position == H1:
+#                     position = I1
+#                 elif position == H2:
+#                     position = I2
+#                 elif position == H3:
+#                     position = I3
+#                 elif position == H4:
+#                     position = I4
+#                 elif position == H5:
+#                     position = I5    
+#                 elif position == H6:
+#                     position = I6
+#                 answer = input(position["text"])
                 
 
-            elif answer == "left":
-                if position == B1:
-                    position = A1
-                elif position == B2:
-                    position = A2
-                elif position == B3:
-                    position = A3
-                elif position == B4:
-                    position = A4
-                elif position == B5:
-                    position = A5    
-                elif position == B6:
-                    position = A6
-                elif position == C1:
-                    position = B1
-                elif position == C2:
-                    position = B2
-                elif position == C3:
-                    position = B3
-                elif position == C4:
-                    position = B4
-                elif position == C5:
-                    position = B5    
-                elif position == C6:
-                    position = B6
-                elif position == D1:
-                    position = C1
-                elif position == D2:
-                    position = C2
-                elif position == D3:
-                    position = C3
-                elif position == D5:
-                    position = C5    
-                elif position == D6:
-                    position = C6        
-                elif position == E1:
-                    position = D1
-                elif position == E2:
-                    position = D2
-                elif position == E3:
-                    position = D3
-                elif position == E5:
-                    position = D5    
-                elif position == E6:
-                    position = D6
-                elif position == F1:
-                    position = E1
-                elif position == F2:
-                    position = E2
-                elif position == F3:
-                    position = E3
-                elif position == F5:
-                    position = E5    
-                elif position == F6:
-                    position = E6
-                elif position == G1:
-                    position = F1
-                elif position == G2:
-                    position = F2
-                elif position == G3:
-                    position = F3
-                elif position == G5:
-                    position = F5    
-                elif position == G6:
-                    position = F6
-                elif position == H1:
-                    position = G1
-                elif position == H2:
-                    position = G2
-                elif position == H3:
-                    position = G3
-                elif position == H4:
-                    position = G4
-                elif position == H5:
-                    position = G5    
-                elif position == H6:
-                    position = G6
-                elif position == I1:
-                    position = H1
-                elif position == I2:
-                    position = H2
-                elif position == I3:
-                    position = H3
-                elif position == I4:
-                    position = H4
-                elif position == I5:
-                    position = H5    
-                elif position == I6:
-                    position = H6
+#             elif answer == "left":
+#                 if position == B1:
+#                     position = A1
+#                 elif position == B2:
+#                     position = A2
+#                 elif position == B3:
+#                     position = A3
+#                 elif position == B4:
+#                     position = A4
+#                 elif position == B5:
+#                     position = A5    
+#                 elif position == B6:
+#                     position = A6
+#                 elif position == C1:
+#                     position = B1
+#                 elif position == C2:
+#                     position = B2
+#                 elif position == C3:
+#                     position = B3
+#                 elif position == C4:
+#                     position = B4
+#                 elif position == C5:
+#                     position = B5    
+#                 elif position == C6:
+#                     position = B6
+#                 elif position == D1:
+#                     position = C1
+#                 elif position == D2:
+#                     position = C2
+#                 elif position == D3:
+#                     position = C3
+#                 elif position == D5:
+#                     position = C5    
+#                 elif position == D6:
+#                     position = C6        
+#                 elif position == E1:
+#                     position = D1
+#                 elif position == E2:
+#                     position = D2
+#                 elif position == E3:
+#                     position = D3
+#                 elif position == E5:
+#                     position = D5    
+#                 elif position == E6:
+#                     position = D6
+#                 elif position == F1:
+#                     position = E1
+#                 elif position == F2:
+#                     position = E2
+#                 elif position == F3:
+#                     position = E3
+#                 elif position == F5:
+#                     position = E5    
+#                 elif position == F6:
+#                     position = E6
+#                 elif position == G1:
+#                     position = F1
+#                 elif position == G2:
+#                     position = F2
+#                 elif position == G3:
+#                     position = F3
+#                 elif position == G5:
+#                     position = F5    
+#                 elif position == G6:
+#                     position = F6
+#                 elif position == H1:
+#                     position = G1
+#                 elif position == H2:
+#                     position = G2
+#                 elif position == H3:
+#                     position = G3
+#                 elif position == H4:
+#                     position = G4
+#                 elif position == H5:
+#                     position = G5    
+#                 elif position == H6:
+#                     position = G6
+#                 elif position == I1:
+#                     position = H1
+#                 elif position == I2:
+#                     position = H2
+#                 elif position == I3:
+#                     position = H3
+#                 elif position == I4:
+#                     position = H4
+#                 elif position == I5:
+#                     position = H5    
+#                 elif position == I6:
+#                     position = H6
 
-                answer = input(position["text"])
+#                 answer = input(position["text"])
                 
 
-            elif answer == "backwards":
-                if position == A1:
-                    position = A2
-                elif position == A2:
-                    position = A3
-                elif position == A3:
-                    position = A4
-                elif position == A4:
-                    position = A5
-                elif position == A5:
-                    position = A6    
-                elif position == B1:
-                    position = B2
-                elif position == B2:
-                    position = B3
-                elif position == B3:
-                    position = B4
-                elif position == B4:
-                    position = B5
-                elif position == B5:
-                    position = B6
-                elif position == C1:
-                    position = C2
-                elif position == C2:
-                    position = C3    
-                elif position == C3:
-                    position = C4
-                elif position == C4:
-                    position = C5
-                elif position == C5:
-                    position = C6
-                elif position == D1:
-                    position = D2
-                elif position == D2:
-                    position = D3        
-                elif position == D5:
-                    position = D6
-                elif position == E1:
-                    position = E2
-                elif position == E2:
-                    position = E3
-                elif position == E3:
-                    position = E4
-                elif position == E4:
-                    position = E5
-                elif position == E5:
-                    position = E6    
-                elif position == F1:
-                    position = F2
-                elif position == F2:
-                    position = F3
-                elif position == F5:
-                    position = F6    
-                elif position == G1:
-                    position = G2
-                elif position == G2:
-                    position = G3
-                elif position == G3:
-                    position = G4
-                elif position == G4:
-                    position = G5
-                elif position == G5:
-                    position = G6    
-                elif position == H1:
-                    position = H2
-                elif position == H2:
-                    position = H3
-                elif position == H3:
-                    position = H4
-                elif position == H4:
-                    position = H5
-                elif position == H5:
-                    position = H6
-                elif position == I1:
-                    position = I2    
-                elif position == I2:
-                    position = I3
-                elif position == I3:
-                    position = I4
-                elif position == I4:
-                    position = I5
-                elif position == I5:
-                    position = I6
+#             elif answer == "backwards":
+#                 if position == A1:
+#                     position = A2
+#                 elif position == A2:
+#                     position = A3
+#                 elif position == A3:
+#                     position = A4
+#                 elif position == A4:
+#                     position = A5
+#                 elif position == A5:
+#                     position = A6    
+#                 elif position == B1:
+#                     position = B2
+#                 elif position == B2:
+#                     position = B3
+#                 elif position == B3:
+#                     position = B4
+#                 elif position == B4:
+#                     position = B5
+#                 elif position == B5:
+#                     position = B6
+#                 elif position == C1:
+#                     position = C2
+#                 elif position == C2:
+#                     position = C3    
+#                 elif position == C3:
+#                     position = C4
+#                 elif position == C4:
+#                     position = C5
+#                 elif position == C5:
+#                     position = C6
+#                 elif position == D1:
+#                     position = D2
+#                 elif position == D2:
+#                     position = D3        
+#                 elif position == D5:
+#                     position = D6
+#                 elif position == E1:
+#                     position = E2
+#                 elif position == E2:
+#                     position = E3
+#                 elif position == E3:
+#                     position = E4
+#                 elif position == E4:
+#                     position = E5
+#                 elif position == E5:
+#                     position = E6    
+#                 elif position == F1:
+#                     position = F2
+#                 elif position == F2:
+#                     position = F3
+#                 elif position == F5:
+#                     position = F6    
+#                 elif position == G1:
+#                     position = G2
+#                 elif position == G2:
+#                     position = G3
+#                 elif position == G3:
+#                     position = G4
+#                 elif position == G4:
+#                     position = G5
+#                 elif position == G5:
+#                     position = G6    
+#                 elif position == H1:
+#                     position = H2
+#                 elif position == H2:
+#                     position = H3
+#                 elif position == H3:
+#                     position = H4
+#                 elif position == H4:
+#                     position = H5
+#                 elif position == H5:
+#                     position = H6
+#                 elif position == I1:
+#                     position = I2    
+#                 elif position == I2:
+#                     position = I3
+#                 elif position == I3:
+#                     position = I4
+#                 elif position == I4:
+#                     position = I5
+#                 elif position == I5:
+#                     position = I6
                 
-                answer = input(position["text"])
+#                 answer = input(position["text"])
 
-            elif answer == "forwards":
-                if position == A2:
-                    position = A1
-                elif position == A3:
-                    position = A2
-                elif position == A4:
-                    position = A3
-                elif position == A5:
-                    position = A4
-                elif position == A6:
-                    position = A5   
-                elif position == B2:
-                    position = B1
-                elif position == B3:
-                    position = B2
-                elif position == B4:
-                    position = B3
-                elif position == B5:
-                    position = B4
-                elif position == B6:
-                    position = B5
-                elif position == C2:
-                    position = C1
-                elif position == C3:
-                    position = C2 
-                elif position == C4:
-                    position = C3
-                elif position == C5:
-                    position = C4
-                elif position == C6:
-                    position = C5
-                elif position == D2:
-                    position = D1
-                elif position == D3:
-                    position = D2         
-                elif position == D6:
-                    position = D5
-                elif position == E2:
-                    position = E1
-                elif position == E3:
-                    position = E2
-                elif position == E4:
-                    position = E3
-                elif position == E5:
-                    position = E4   
-                elif position == E6:
-                    position = E5
-                elif position == F2:
-                    position = F1
-                elif position == F3:
-                    position = F2   
-                elif position == F6:
-                    position = F5
-                elif position == G2:
-                    position = G1
-                elif position == G3:
-                    position = G2
-                elif position == G4:
-                    position = G3    
-                elif position == G5:
-                    position = G4
-                elif position == G6:
-                    position = G5
-                elif position == H2:
-                    position = H1
-                elif position == H3:
-                    position = H2
-                elif position == H4:
-                    position = H3
-                elif position == H5:
-                    position = H4    
-                elif position == H6:
-                    position = H5
-                elif position == I2:
-                    position = I1
-                elif position == I3:
-                    position = I2
-                elif position == I4:
-                    position = I3
-                elif position == I5:
-                    position = I4
-                elif position == I6:
-                    position = I5
-                answer = input(position["text"])
-game = "dead"
+#             elif answer == "forwards":
+#                 if position == A2:
+#                     position = A1
+#                 elif position == A3:
+#                     position = A2
+#                 elif position == A4:
+#                     position = A3
+#                 elif position == A5:
+#                     position = A4
+#                 elif position == A6:
+#                     position = A5   
+#                 elif position == B2:
+#                     position = B1
+#                 elif position == B3:
+#                     position = B2
+#                 elif position == B4:
+#                     position = B3
+#                 elif position == B5:
+#                     position = B4
+#                 elif position == B6:
+#                     position = B5
+#                 elif position == C2:
+#                     position = C1
+#                 elif position == C3:
+#                     position = C2 
+#                 elif position == C4:
+#                     position = C3
+#                 elif position == C5:
+#                     position = C4
+#                 elif position == C6:
+#                     position = C5
+#                 elif position == D2:
+#                     position = D1
+#                 elif position == D3:
+#                     position = D2         
+#                 elif position == D6:
+#                     position = D5
+#                 elif position == E2:
+#                     position = E1
+#                 elif position == E3:
+#                     position = E2
+#                 elif position == E4:
+#                     position = E3
+#                 elif position == E5:
+#                     position = E4   
+#                 elif position == E6:
+#                     position = E5
+#                 elif position == F2:
+#                     position = F1
+#                 elif position == F3:
+#                     position = F2   
+#                 elif position == F6:
+#                     position = F5
+#                 elif position == G2:
+#                     position = G1
+#                 elif position == G3:
+#                     position = G2
+#                 elif position == G4:
+#                     position = G3    
+#                 elif position == G5:
+#                     position = G4
+#                 elif position == G6:
+#                     position = G5
+#                 elif position == H2:
+#                     position = H1
+#                 elif position == H3:
+#                     position = H2
+#                 elif position == H4:
+#                     position = H3
+#                 elif position == H5:
+#                     position = H4    
+#                 elif position == H6:
+#                     position = H5
+#                 elif position == I2:
+#                     position = I1
+#                 elif position == I3:
+#                     position = I2
+#                 elif position == I4:
+#                     position = I3
+#                 elif position == I5:
+#                     position = I4
+#                 elif position == I6:
+#                     position = I5
+#                 answer = input(position["text"])
+# game = "dead"
 if game == "s":
     print(Fore.RED + "You failed!" + Fore.WHITE)
 
-print(position["letter"],position["number"])
+# print(position["letter"],position["number"])
