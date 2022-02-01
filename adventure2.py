@@ -1,10 +1,9 @@
 from logging import root
+from multiprocessing.sharedctypes import Value
 from turtle import width
 from colorama import Fore, Style
 import keyboard
-from tabulate import tabulate
-import tkinter as tk
-import easygui                    #pop up
+from tabulate import tabulate                    #pop up
 #map                                                                                                                                       #print(tabulate(map, headers='firstrow', tablefmt='grid'))
 map = [["a","b","c","d","e","f","g","h","i",""],
 ["desert", "desert", "desert", "desert","plains","plains","plains","plains","abandoned house","1"], 
@@ -16,19 +15,12 @@ map = [["a","b","c","d","e","f","g","h","i",""],
 answer = 0
 game = "alive"
 health = 100
-window = tk.Tk()
-MapPrint = print(tabulate(map, headers='firstrow', tablefmt='grid'))
-window.geometry("1000x1000")
-greeting = tk.Label(text=MapPrint,font = ("Arial", 20))
-greeting.pack()
-window.mainloop()
 Introduction = "Welcome to the game your objective is to kill the final boss you move by typing where would you like to go for example 'left' or 'right' the choice is yours and if you type the letter 'm' it will show you the map and it will say where you are. Also there are items that you can use for example 'gun' 'sword', there are enemies like 'goblin' 'aligator'.So lets start good luck and don't die."
-print(MapPrint)
-inventory = {"gun":False,"axe":False,"HealingPots":False,"rock": False,"sword":False,"stick":True}
-
+inventory = {"weapons":{"gun":False,"axe":False,"rock": False,"sword":False,"stick":True},"potions":{"HealingPotion":False,"StrengthPotion":False}}
+MapPrint = tabulate(map, headers='firstrow', tablefmt='grid')
 enemies = {"aligator":False,"person":False,"goblin":False,"village":False,"zombie":False}
 
-alive ={"aligator":True,"person":True,"goblin":True,"village":True,"zombie":True}
+enemiesAlive ={"aligator":True,"person":True,"goblin":True,"village":True,"zombie":True}
 
 A1 = {"text":"You are in an abandoned house.You just find a gun. there is plains on your left muddy dirt behind you. Where would you like to go?(left/backwards)",
 "item":"gun","moves":"0011","enemies":False,"letter":"A","number":"1"
@@ -39,7 +31,7 @@ A2 = {"text":"You are in muddy dirt.To your left there is more muddy dirt forwar
 }
 
 A3 = {"text":"you are in the lake there is a 30 present chance that the aligator will attack you.there is muddy dirt in front of you woods behind you and lake left from you. Where would you like to go?(left/forwards/backwards)"
-,"item":False,"moves":"1011","enemies":"aligator","letter":"A","number":"3"
+,"item":False,"moves":"1011","enemies":False,"letter":"A","number":"3"
 }
 
 A4 = {"text":"You are in woods. To your left there is more woods backwards there is more woods and forward there is a lake. Where would you like to go?(left/forward/backwards)"
@@ -90,7 +82,7 @@ C3 = {"text":"You are in muddy dirt.To your left and in front of you there are p
 ,"item":False,"moves":"1111","enemies":False,"letter":"C","number":"3"
 }
 
-C4 = {"text":"You are in woods.To your left there is a river to your right there is woods forwards there is muddy dirt and behind there is woods.Where would you like to go?(right/backwards/forwards)"
+C4 = {"text":"You are in woods.To your left there is a river to your right there is woods forwards there is muddy dirt and behind there is woods.Where would you like to go?(left/backwards/forwards)"
 ,"item":False,"moves":"1110","enemies":False,"letter":"C","number":"4"
 }
 
@@ -111,11 +103,11 @@ D2 = {"text":"There is a person would you like to attack to him or ignore him?Th
 }
 
 D3 = {"text":"You are in muddy dirt.There is plains to your right and in front of you and muddy dirt.Where would you like to go?(left/forwards/right)"
-,"item":False,"moves":"1101","enemies":"person","letter":"D","number":"3"
+,"item":False,"moves":"1101","enemies":False,"letter":"D","number":"3"
 }
 
 D5 = {"text":"You are in a road. there is a muddy road to your left a road behind you and woods to your right.Where would you like to go(left/right/backwards)?"
-,"item":False,"moves":"0111","enemies":"person","letter":"D","number":"5"
+,"item":False,"moves":"0111","enemies":False,"letter":"D","number":"5"
 }
 
 D6 = {"text":"You are in a road. There are roads to your right and in front of you and the start to your left. Where would you like to go?(left/right/forwards)"
@@ -247,36 +239,50 @@ I6 = {"text":""
 #Example movement:
 #answer = input(position["text"])
 # TODO:make start posiosion random?!
-position = E6
-StringPos = position["letter"],position["number"]
 print(Fore.RED + Introduction + Fore.WHITE)
+
+def fight(pos):
+    for k,v in inventory["weapons"].items():
+        if v==True:
+            print("choose your weapon to fight with")
+            weapons = input(k)
+def item(pos,inventory):
+    for k,v in inventory.item():
+        if pos["item"] == "gun":
+            inventory.replace("gun",)
 
 
 def moveOptions(pos):
-    answer = input(pos["text"])
-    print("Your answer was: " + answer)
+    if pos["enemies"] != False:
+        fight(pos)
+    if pos["item"] != False:
+        item()
     if answer=="left":
         newPos = (chr(ord(pos["letter"]) - 1) + pos["number"])
-        print(globals()[newPos])
+        print(MapPrint)
+        print("you are in:",Fore.BLUE,newPos,Fore.WHITE)
         moveOptions(globals()[newPos])
     if answer=="right":
         newPos = (chr(ord(pos["letter"]) + 1) + pos["number"])
-        print(globals()[newPos])
+        print(MapPrint)
+        print("you are in:",Fore.BLUE,newPos,Fore.WHITE)
         moveOptions(globals()[newPos])
     if answer=="forwards":
         newPos = pos["letter"] + (chr(ord( pos["number"]) - 1))
-        print(globals()[newPos])
+        print(MapPrint)
+        print("you are in:",Fore.BLUE,newPos,Fore.WHITE)
         moveOptions(globals()[newPos])
     if answer=="backwards":
         newPos = pos["letter"] + (chr(ord( pos["number"]) + 1))
-        print(globals()[newPos])
+        print(MapPrint)
+        print("you are in:",Fore.BLUE,newPos,Fore.WHITE)
         moveOptions(globals()[newPos])
     
 while health > 0:
     moveOptions(E6)
-    if keyboard.is_pressed("m") == True:
-        print(MapPrint)
-        print("you are in:",Fore.BLUE,StringPos,Fore.WHITE)
+#if keyboard.is_pressed("m") == True:
+    # print(MapPrint)
+    # print("you are in:",Fore.BLUE,StringPos,Fore.WHITE)
 
 
 
